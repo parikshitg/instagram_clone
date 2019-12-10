@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       validator: (input) => input.length < 6
                           ? 'Must be atleast 6 characters'
                           : null,
-                      onSaved: (input) => _email = input,
+                      onSaved: (input) => _password = input,
                       obscureText: true,
                     ),
                   ),
