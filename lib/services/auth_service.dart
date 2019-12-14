@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/login_screen.dart';
-import '../screens/home_screen.dart';
+import '../screens/feed_screen.dart';
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
@@ -21,7 +21,7 @@ class AuthService {
           'email': email,
           'profileImageurl': '',
         });
-        Navigator.pushNamed(context, HomeScreen.id);
+        Navigator.pushNamed(context, FeedScreen.id);
       }
 
     } catch (e) {
@@ -39,7 +39,7 @@ class AuthService {
   static void login(String email,String password) async {
     try {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
-    //Navigator.pushNamed(context, HomeScreen.id);
+    //Navigator.pushNamed(context, FeedScreen.id);
     } catch (e) {
       print(e);
     }

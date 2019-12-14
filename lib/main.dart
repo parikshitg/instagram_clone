@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
 
 import './screens/login_screen.dart';
+import './screens/feed_screen.dart';
 import './screens/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       routes: {
         LoginScreen.id: (context) => LoginScreen(),
         SignupScreen.id: (context) => SignupScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+        FeedScreen.id: (context) => FeedScreen(),
       },
     );
   }
