@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/login_screen.dart';
 import '../screens/home_screen.dart';
 
 class AuthService {
@@ -26,5 +27,11 @@ class AuthService {
     } catch (e) {
       print(e);
     }
+  }
+
+
+  static void logout(BuildContext context) {
+    _auth.signOut();
+    Navigator.pushNamed(context, LoginScreen.id);
   }
 }

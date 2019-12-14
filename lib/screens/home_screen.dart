@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -13,6 +14,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
+      body: Center(
+        child: FlatButton(
+          onPressed: () => AuthService.logout(context),
+          child: Text("LOGOUT"),
+        ),
+      ),
     );
   }
 }
