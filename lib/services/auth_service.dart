@@ -30,8 +30,18 @@ class AuthService {
   }
 
 
-  static void logout(BuildContext context) {
+  static void logout() {
     _auth.signOut();
-    Navigator.pushNamed(context, LoginScreen.id);
+   // Navigator.pushNamed(context, LoginScreen.id);
+  }
+
+
+  static void login(String email,String password) async {
+    try {
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    //Navigator.pushNamed(context, HomeScreen.id);
+    } catch (e) {
+      print(e);
+    }
   }
 }

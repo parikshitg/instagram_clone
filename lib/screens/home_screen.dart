@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.blue,
       body: Center(
         child: FlatButton(
-          onPressed: () => AuthService.logout(context),
+          onPressed: () => AuthService.logout(),
           child: Text("LOGOUT"),
         ),
       ),
