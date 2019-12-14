@@ -21,7 +21,8 @@ class AuthService {
           'email': email,
           'profileImageurl': '',
         });
-        Navigator.pushNamed(context, FeedScreen.id);
+        //Navigator.pushNamed(context, FeedScreen.id);
+        Navigator.pop(context);
       }
 
     } catch (e) {
