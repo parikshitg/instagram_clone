@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -12,6 +13,10 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
 
   File _image;
+
+  TextEditingController _captionController = TextEditingController();
+  String _caption = ""; 
+  bool _isLoading = false;
 
   _showSelectImageDialog() {
     return Platform.isIOS ? _iosBottomSheet() : _androidDialog;
@@ -73,10 +78,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     File imageFile = await ImagePicker.pickImage(source: source);
     if(imageFile != null){
+      imageFile = await _cropImage(imageFile);
       setState(() {
         _image = imageFile;
       });
     }
+  }
+
+  _cropImage(File imageFile) async {
+    File croppedImage = await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+    );
+    return croppedImage;
   }
 
   @override
