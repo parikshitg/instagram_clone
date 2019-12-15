@@ -100,7 +100,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   _submit() async {
-    if(!_isLoading && _image != null && _caption.isNotEmpty){
+    if (!_isLoading && _image != null && _caption.isNotEmpty) {
       setState(() {
         _isLoading = true;
       });
@@ -112,12 +112,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         caption: _caption,
         likes: {},
         authorId: Provider.of<UserData>(context).currentUserId,
-        timestamp: Timestamp.fromDate(DateTime.now(),),
+        timestamp: Timestamp.fromDate(
+          DateTime.now(),
+        ),
       );
 
       DatabaseService.createPost(post);
-
-
 
       //Reset data
       _captionController.clear();
@@ -157,24 +157,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             height: height,
             child: Column(
               children: <Widget>[
-                GestureDetector(
-                  onTap: _showSelectImageDialog,
-                  child: Container(
-                    height: width,
-                    width: width,
-                    color: Colors.grey[300],
-                    child: _image == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            color: Colors.white70,
-                            size: 150.0,
-                          )
-                        : Image(
-                            image: FileImage(_image),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
+                _isLoading
+                    ? Padding(
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: LinearProgressIndicator(
+                          backgroundColor: Colors.blue[200],
+                          valueColor: AlwaysStoppedAnimation(Colors.blue),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                    GestureDetector(
+                        onTap: _showSelectImageDialog,
+                        child: Container(
+                          height: width,
+                          width: width,
+                          color: Colors.grey[300],
+                          child: _image == null
+                              ? Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.white70,
+                                  size: 150.0,
+                                )
+                              : Image(
+                                  image: FileImage(_image),
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
                 SizedBox(
                   height: 20.0,
                 ),
