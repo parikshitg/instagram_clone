@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/models.dart/user_data.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/login_screen.dart';
 import '../screens/feed_screen.dart';
@@ -22,6 +24,7 @@ class AuthService {
           'profileImageurl': '',
         });
         //Navigator.pushNamed(context, FeedScreen.id);
+        Provider.of<UserData>(context).currentUserId = signedInUser.uid;
         Navigator.pop(context);
       }
 
