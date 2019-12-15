@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/models.dart/user_model.dart';
 import 'package:instagram_clone/services/database_service.dart';
+import 'package:instagram_clone/services/storage_service.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final User user;
@@ -14,6 +19,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  File _profileImage;
   String _name = '';
   String _bio = '';
 
@@ -24,12 +30,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _bio = widget.user.bio;
   }
 
-  _submit() {
+  _handleImageFromGallery() async {
+    File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if(imageFile != null){
+      setState(() {
+        _profileImage = imageFile;
+      });
+    }
+  }
+
+  _displayProfileImage() {
+    //no new profile image
+    if(_profileImage == null){
+      //no existing profile image
+      if(widget.user.profileImageUrl.isEmpty){
+        //display placeholder image
+        return AssetImage("assets/images/user_placeholder.png");
+      } else {
+        //if user profile image already exists
+        return CachedNetworkImageProvider(widget.user.profileImageUrl);
+      }
+    } else{
+      //there is a new profile image
+      return FileImage(_profileImage);
+    }
+  }
+
+  _submit() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       //update user in database
       String _profileImageUrl = '';
+
+      if(_profileImage == null){
+        _profileImageUrl = widget.user.profileImageUrl;
+      } else {
+        _profileImageUrl = await StorageService.uploadUserProfileImage(widget.user.profileImageUrl, _profileImage);
+      }
+
       User user = User(
         id: widget.user.id,
         name: _name,
@@ -64,10 +103,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: <Widget>[
                   CircleAvatar(
                     radius: 60.0,
-                    backgroundImage: AssetImage('assets/images/john.jpg'),
+                    backgroundColor: Colors.grey,
+                    backgroundImage: _displayProfileImage(),
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: _handleImageFromGallery,
                     child: Text(
                       "Change Profile Image",
                       style: TextStyle(

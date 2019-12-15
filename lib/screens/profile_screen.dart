@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models.dart/user_model.dart';
 import 'package:instagram_clone/screens/edit_profile_screen.dart';
@@ -20,8 +21,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if(!snapshot.hasData){
-            return Center(child: CircularProgressIndicator(),);
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
           User user = User.fromDoc(snapshot.data);
           //print(user.name);
@@ -36,7 +39,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: <Widget>[
                     CircleAvatar(
                       radius: 50.0,
-                      backgroundImage: AssetImage('assets/images/john.jpg'),
+                      backgroundColor: Colors.grey,
+                      backgroundImage: user.profileImageUrl.isEmpty
+                          ? AssetImage('assets/images/user_placeholder.png')
+                          : CachedNetworkImageProvider(user.profileImageUrl),
                     ),
                     Expanded(
                       child: Column(
@@ -97,7 +103,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               color: Colors.blue,
                               textColor: Colors.white,
-                              onPressed:() => Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfileScreen(user: user),)),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        EditProfileScreen(user: user),
+                                  )),
                             ),
                           ),
                         ],
